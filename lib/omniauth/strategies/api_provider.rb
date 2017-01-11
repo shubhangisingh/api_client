@@ -1,4 +1,5 @@
-require 'omniauth-oauth2'
+require 'omniauth'
+require 'omniauth/strategies/oauth2'
 
 module OmniAuth
   module Strategies
@@ -37,3 +38,4 @@ module OmniAuth
     end
   end
 end
+OmniAuth.Strategies << OmniAuth::Strategies::ApiProvider
