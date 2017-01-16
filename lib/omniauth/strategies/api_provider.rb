@@ -1,41 +1,29 @@
-require 'omniauth'
-require 'omniauth/strategies/oauth2'
+require 'omniauth-oauth2'
 
 module OmniAuth
   module Strategies
     class ApiProvider < OmniAuth::Strategies::OAuth2
-      # Give your strategy a name.
+      # change the class name and the :name option to match your application name
       option :name, :api_provider
 
-      # This is where you pass the options you would pass when
-      # initializing your consumer from the OAuth gem.
-      option :client_options, {site: "http://localhost:3000",
-        authorize_path: "/oauth/authorize"
+      option :client_options, {
+        :site => "http://localhost:3000",
+        :authorize_url => "http://localhost:3000/oauth/authorize"
       }
 
-      # These are called after authentication has succeeded. If
-      # possible, you should try to set the UID without making
-      # additional calls (if the user id is returned with the token
-      # or as a URI parameter). This may not be possible with all
-      # providers.
-      uid{ raw_info['id'] }
+      uid { raw_info["id"] }
 
       info do
         {
-          email: raw_info['email']
-        }
-      end
-
-      extra do
-        {
-          'raw_info' => raw_info
+          :email => raw_info["email"]
+          # and anything else you want to return to your API consumers
         }
       end
 
       def raw_info
-        @raw_info ||= access_token.get('api/me').parsed
+        @raw_info ||= access_token.get('/api/me.json').parsed
       end
+
     end
   end
 end
-OmniAuth.Strategies << OmniAuth::Strategies::ApiProvider

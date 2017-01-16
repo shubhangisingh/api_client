@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
   def create
-    render text: request.env['omniauth.auth'].to_yaml
+
+    auth = request.env['omniauth.auth']
+  render json: auth.to_jso
   end
 end
